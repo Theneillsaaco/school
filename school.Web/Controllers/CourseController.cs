@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using school.Web.Models;
 using School.DAL.Interfaces;
+using School.DAL.Entities;
 
 namespace school.Web.Controllers
 {
     public class CourseController : Controller
     {
         private readonly IDaoCourse daoCourse;
+        private readonly IDaoDepartment daoDepartment;
 
-        public CourseController(IDaoCourse daoCourse) 
+        public CourseController(IDaoCourse daoCourse, IDaoDepartment daoDepartment) 
         {
             this.daoCourse = daoCourse;
+            this.daoDepartment = daoDepartment;
         }
 
 
@@ -55,16 +59,39 @@ namespace school.Web.Controllers
         // GET: CourseController1/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var course = this.daoCourse.GetCourse(id);
+            CourseModel courseModel = new CourseModel(course);
+
+            var departmentList = this.daoDepartment.GetDepartments()
+                                                   .Select(cd => new DepartmentList() 
+                                                   {
+                                                       DepartmentId = cd.DepartmentId,
+                                                       Name = cd.Name
+                                                   })
+                                                   .ToList();
+
+            ViewData["Departments"] = new SelectList(departmentList, "DepartmentId", "Name");
+
+            return View(courseModel);
         }
 
         // POST: CourseController1/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(CourseModel courseModel)
         {
             try
             {
+                this.daoCourse.UpdateCourse(new Course()
+                {
+                    CourseId = courseModel.CourseId,
+                    ModifyDate = DateTime.Now,
+                    DepartmentId = courseModel.DepartmentId,
+                    Credits = courseModel.Credits,
+                    UserMod = 1,
+                    Title = courseModel.Title
+                });
+   
                 return RedirectToAction(nameof(Index));
             }
             catch

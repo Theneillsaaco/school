@@ -88,7 +88,7 @@ namespace School.DAL.Dao
                              join depto in this.context.Departments on Course.DepartmentId 
                                                                  equals depto.DepartmentId
                              where Course.Deleted == false
-                             orderby Course.CreationDate ascending
+                             orderby Course.CreationDate descending
                              select new CourseDaoModel() 
                              {
                                  CourseId = Course.CourseId,
@@ -148,8 +148,9 @@ namespace School.DAL.Dao
             courseToUpdate.Title = course.Title;
             courseToUpdate.Credits = course.Credits;
             courseToUpdate.UserMod = course.UserMod;
+            courseToUpdate.DepartmentId = course.DepartmentId;
 
-            this.context.Course.Add(courseToUpdate);
+            this.context.Course.Update(courseToUpdate);
             this.context.SaveChanges();
         }
 
