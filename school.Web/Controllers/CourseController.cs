@@ -21,7 +21,8 @@ namespace school.Web.Controllers
         // GET: CourseController1
         public ActionResult Index()
         {
-            var courses = this.daoCourse.GetCourses().Select(cd => new Models.CourseModel(cd));
+            var courses = this.daoCourse.GetCourses()
+                                        .Select(cd => new CourseModel(cd));
 
             return View(courses);
         }

@@ -4,7 +4,6 @@ using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
 using School.DAL.Models;
-using System.Reflection.Metadata.Ecma335;
 
 namespace School.DAL.Dao 
 {
@@ -118,11 +117,6 @@ namespace School.DAL.Dao
         {
             try
             {
-                string message = string.Empty;
-
-                if (!IsCourseValid(course, ref message, Operations.Save))
-                    throw new DaoCourseException(message);
-
                 this.context.Course.Add(course);
                 this.context.SaveChanges();
             }

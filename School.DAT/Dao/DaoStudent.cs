@@ -3,6 +3,7 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
+using School.DAL.Models;
 
 namespace School.DAL.Dao
 {
@@ -13,48 +14,109 @@ namespace School.DAL.Dao
         {
             this.context = context;
         }
+
         public bool ExistesStudent(Func<Student, bool> filter)
         {
             return this.context.Students.Any(filter);
         }
 
-        public Student GetStudent(int Id)
+        public StudentDaoModel GetStudent(int Id)
         {
-            return this.context.Students.Find(Id);
+            StudentDaoModel? studentDaoModel = new StudentDaoModel();
+            try 
+            {
+                studentDaoModel = (from Student in this.context.Students
+                                   where Student.Deleted == false
+                                   && Student.Id == Id
+                                   select new StudentDaoModel()
+                                   {
+                                       CreationDate = Student.CreationDate,
+                                       LastName = Student.LastName,
+                                       FirstName = Student.FirstName,
+                                       Id = Student.Id,
+                                       EnrollmentDate = Student.EnrollmentDate
+                                   }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+            return studentDaoModel;
         }
 
-        public List<Student> GetStudent()
+        public List<StudentDaoModel> GetStudent()
         {
-            return this.context.Students.ToList();
+            List<StudentDaoModel>? studentList = new List<StudentDaoModel>();
+            try
+            {
+                studentList = (from Student in this.context.Students
+                               where Student.Deleted == false
+                               select new StudentDaoModel()
+                               {
+                                   CreationDate = Student.CreationDate,
+                                   LastName = Student.LastName,
+                                   FirstName = Student.FirstName,
+                                   Id = Student.Id,
+                                   EnrollmentDate = Student.EnrollmentDate
+                               }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+
+            return studentList;
         }
 
-        public List<Student> GetStudents(Func<Student, bool> filter)
+        public List<StudentDaoModel> GetStudents(Func<Student, bool> filter)
         {
-            return this.context.Students.Where(filter).ToList();
+            List<StudentDaoModel>? studentList = new List<StudentDaoModel>();
+
+            try
+            {
+                var student = this.context.Students.Where(filter);
+
+                studentList = (from Student in this.context.Students
+                               where Student.Deleted == false
+                               orderby Student.CreationDate descending
+                               select new StudentDaoModel()
+                               {
+                                   CreationDate = Student.CreationDate,
+                                   LastName = Student.LastName,
+                                   FirstName = Student.FirstName,
+                                   Id = Student.Id,
+                                   EnrollmentDate = Student.EnrollmentDate
+                               }).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+
+            return studentList;
         }
 
         public void RemoveStudent(Student student)
         {
-            Student studentToRemove = this.GetStudent(student.Id);
-            
-            studentToRemove.Deleted = student.Deleted;
-            studentToRemove.DeletedDate = student.DeletedDate;  
-            studentToRemove.UserDeleted = student.UserDeleted;  
-            
-            this.context.Students.Update(studentToRemove);
 
-            this.context.SaveChanges();
         }
 
         public void SaveStudent(Student student)
         {
-            string message = string.Empty;
+            try
+            {
+                this.context.Students.Add(student);
+                this.context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
 
-            if (!IsStudentsValid(student, ref message, Operations.Save))
-                throw new DaoStudentException(message);
+                throw new DaoStudentException(ex.Message);
+            }
             
-            this.context.Students.Add(student);
-            this.context.SaveChanges();
         }
 
         public void UpdateStudent(Student student)
@@ -64,7 +126,10 @@ namespace School.DAL.Dao
             if (!IsStudentsValid(student, ref message, Operations.Update))
                 throw new DaoStudentException(message);
 
-            Student studentToUpdate = this.GetStudent(student.Id);
+            Student? studentToUpdate = this.context.Students.Find(student.Id);
+
+            if (student is null)
+                throw new DaoStudentException("No se encotro el curso.");
 
             studentToUpdate.ModifyDate = student.ModifyDate;
             studentToUpdate.LastName = student.LastName;
@@ -72,7 +137,7 @@ namespace School.DAL.Dao
             studentToUpdate.FirstName = student.FirstName;
 
 
-            this.context.Students.Add(studentToUpdate);
+            this.context.Students.Update(studentToUpdate);
             this.context.SaveChanges();
         }
 

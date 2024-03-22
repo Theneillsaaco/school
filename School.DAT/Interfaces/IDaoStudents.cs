@@ -1,15 +1,16 @@
 ﻿using School.DAL.Entities;
+using School.DAL.Models;
 
 namespace School.DAL.Interfaces
 {
-    internal interface IDaoStudent
+    public interface IDaoStudent
     {
         void SaveStudent(Student student);
         void UpdateStudent(Student student);    
         void RemoveStudent(Student student);
-        Student GetStudent(int Id);
-        List<Student> GetStudent(); 
-        List<Student> GetStudents(Func<Student, bool>filter);
-        bool ExistesStudent(Func<Student, bool>filter);
+        StudentDaoModel GetStudent(int Id);
+        List<StudentDaoModel> GetStudent(); 
+        List<StudentDaoModel> GetStudents(Func<Student, bool> filter);
+        bool ExistesStudent(Func<Student, bool> filter);
     }
 }
