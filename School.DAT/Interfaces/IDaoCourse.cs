@@ -12,7 +12,5 @@ namespace School.DAL.Interfaces
         List<CourseDaoModel> GetCourses();
         List<CourseDaoModel> GetCourses(Func<Course, bool> filter);
         bool ExistsCourse(Func<Course, bool> filter);
-
-
     }
 }

@@ -36,23 +36,21 @@ namespace school.Web.Controllers
         }
 
         // GET: CourseController1/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            var deparmentList = this.daoDepartment.GetDepartments()
-                                                            .Select(cd => new DepartmentList()
-                                                            {
-                                                                DepartmentId = cd.DepartmentId,
-                                                                Name = cd.Name
-                                                            })
-                                                            .ToList();
+            var departmentList = this.daoDepartment.GetDepartments()
+                                                   .Select(cd => new DepartmentList()
+                                                   {
+                                                       DepartmentId = cd.DepartmentId,
+                                                       Name = cd.Name
+                                                   }).ToList();
 
-            ViewData["Deparments"] = new SelectList(deparmentList, "DepartmentId", "Name");
+            ViewData["Departments"] = new SelectList(departmentList, "DepartmentId", "Name");
 
             return View();
         }
-
-        // POST: CourseController1/Create
-        [HttpPost]
+            // POST: CourseController1/Create
+            [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CourseModel courseModel)
         {
