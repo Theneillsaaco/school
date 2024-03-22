@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace School.DAL.Models
+﻿namespace School.DAL.Models
 {
-    internal class StudentDaoModel
+    public class StudentDaoModel
     {
+        public int Id { get; set; }
+        public string? LastName { get; set; }
+        public string? FirstName { get; set; }
+        public DateTime? CreationDate { get; set; }
+        public DateTime? EnrollmentDate { get; set; }
+
     }
 }
