@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace School.DAL.Models
+﻿namespace School.DAL.Models
 {
     public class StudentDaoModel
     {
