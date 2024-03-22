@@ -38,16 +38,36 @@ namespace school.Web.Controllers
         // GET: CourseController1/Create
         public ActionResult Create()
         {
+            var deparmentList = this.daoDepartment.GetDepartments()
+                                                            .Select(cd => new DepartmentList()
+                                                            {
+                                                                DepartmentId = cd.DepartmentId,
+                                                                Name = cd.Name
+                                                            })
+                                                            .ToList();
+
+            ViewData["Deparments"] = new SelectList(deparmentList, "DepartmentId", "Name");
+
             return View();
         }
 
         // POST: CourseController1/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CourseModel courseModel)
         {
             try
             {
+                this.daoCourse.SaveCourse(new Course()
+                {
+                    CreationDate = DateTime.Now,
+                    CreationUser = 1,
+                    Title = courseModel.Title,
+                    Credits = courseModel.Credits,
+                    DepartmentId = courseModel.DepartmentId
+
+                });
+
                 return RedirectToAction(nameof(Index));
             }
             catch

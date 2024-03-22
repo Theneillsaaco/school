@@ -1,6 +1,4 @@
-﻿
-
-namespace School.DAL.Exceptions
+﻿namespace School.DAL.Exceptions
 {
     public class DaoDepartmentException : Exception
     {
