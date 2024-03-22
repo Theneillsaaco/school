@@ -1,14 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using school.Web.Models;
+using School.DAL.Dao;
+using School.DAL.Entities;
+using School.DAL.Interfaces;
 
 namespace school.Web.Controllers
 {
     public class StudentController : Controller
     {
+        private readonly IDaoStudent daoStudent;
+
+        public StudentController(IDaoStudent daoStudent)
+        {
+            this.daoStudent = daoStudent;
+        }
+
         // GET: StudentController
         public ActionResult Index()
         {
-            return View();
+            Func<Student, bool> filter = s => s.Deleted == false;
+
+            var student = this.daoStudent.GetStudents()
+                                         .Select(cd => new StudentModel(cd));
+            return View(student);
         }
 
         // GET: StudentController/Details/5
