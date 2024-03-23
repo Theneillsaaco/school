@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/school.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/menuLayout.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -25,13 +26,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="index">Departamentos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="index">Cursos</a>
-                        </li>
-                             <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="index">Student</a>
+                        @* menu desplegable *@
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="administrarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administrar
+                            </a>
+                            <ul class="dropdown-menu menu-desplegable" aria-labelledby="administrarDropdown">
+                                @* intergaciones de controladores *@
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Department")">Departamento</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Course")">Curso</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Student")">Estudiante</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
