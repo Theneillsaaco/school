@@ -90,10 +90,7 @@ namespace School.DAL.Dao
                 departmentToUpdate.UserMod = department.UserMod;
 
                 this.context.Departments.Update(departmentToUpdate);
-                this.context.SaveChanges();
-
-           
-            
+                this.context.SaveChanges(); 
         }
         #endregion
 

@@ -2,6 +2,7 @@
 using school.Web.Models;
 using School.DAL.Dao;
 using School.DAL.Entities;
+using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 
 namespace school.Web.Controllers
@@ -46,7 +47,7 @@ namespace school.Web.Controllers
             };
 
 
-            return View();
+            return View(modelStud);
         }
 
         // GET: StudentController/Create
@@ -58,10 +59,20 @@ namespace school.Web.Controllers
         // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(StudentModel studentModel)
         {
             try
             {
+                Student student = new Student()
+                {
+                    FirstName = studentModel.FirstName,
+                    LastName = studentModel.LastName,
+                    CreationUser = 1,
+                    CreationDate = DateTime.Now,
+                    EnrollmentDate = DateTime.Now
+                };
+
+                this.daoStudent.SaveStudent(student);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -73,20 +84,43 @@ namespace school.Web.Controllers
         // GET: StudentController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var student = this.daoStudent.GetStudent(id);
+
+            var modelStud = new StudentModel()
+            {
+                Id = student.Id,
+                LastName = student.LastName,
+                FirstName = student.FirstName,
+                EnrollmentDate = student.EnrollmentDate,
+            };
+
+            return View(modelStud);
         }
 
         // POST: StudentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(StudentModel studentModel)
         {
             try
             {
+                Student student = new Student()
+                {
+                    Id = studentModel.Id,
+                    LastName = studentModel.LastName,
+                    FirstName = studentModel.FirstName,
+                    EnrollmentDate = studentModel.EnrollmentDate,
+                    ModifyDate = DateTime.Now,
+                    UserMod = 1
+
+                };
+
+                this.daoStudent.UpdateStudent(student);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (DaoStudentException daoEx)
             {
+                ViewBag.Message = daoEx.Message; 
                 return View();
             }
         }

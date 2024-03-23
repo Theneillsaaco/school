@@ -30,7 +30,7 @@ namespace School.DAL.Dao
         {
             var querry = (from stud in this.context.Students
                           where stud.Deleted == false 
-                          orderby stud.CreationDate descending
+                          orderby stud.Id ascending
                           select stud).ToList();
             return querry;
         }
@@ -84,7 +84,8 @@ namespace School.DAL.Dao
             studentToUpdate.LastName = student.LastName;
             studentToUpdate.UserMod = student.UserMod;
             studentToUpdate.FirstName = student.FirstName;
-
+            studentToUpdate.UserMod = student.UserMod;
+            studentToUpdate.ModifyDate = student.ModifyDate;
 
             this.context.Students.Update(studentToUpdate);
             this.context.SaveChanges();
