@@ -29,7 +29,8 @@ namespace School.DAL.Dao
                                                                           equals depto.CourseId
                                         select new OnlineCourseDaoModel()
                                         {
-                                            CourseId = OnlineCourse.CourseId
+                                            CourseId = OnlineCourse.CourseId,
+                                            CourseName = depto.Title
                                         }).FirstOrDefault();  
             }
             catch(Exception ex)
@@ -44,12 +45,13 @@ namespace School.DAL.Dao
             List<OnlineCourseDaoModel>? onlineList= new List<OnlineCourseDaoModel>();
             try
             {
-                onlineList = (from onlineCourse in this.context.OnlineAssignments
-                              join depto in this.context.Course on onlineCourse.CourseId
+                onlineList = (from OnlineCourse in this.context.OnlineAssignments
+                              join depto in this.context.Course on OnlineCourse.CourseId
                                                                      equals depto.CourseId
                               select new OnlineCourseDaoModel()
                               {
-                                  CourseId = onlineCourse.CourseId
+                                  CourseId = OnlineCourse.CourseId,
+                                  CourseName = depto.Title
 
                               }).ToList();
             }
@@ -66,14 +68,15 @@ namespace School.DAL.Dao
 
             try
             {
-                var onlineCourse = this.context.OnlineAssignments.Where(filter);
+                var cursosFiltradosOnline = this.context.OnlineAssignments.Where(filter);
 
-                onlineList = (from OnlineCourse in onlineCourse
-                              join depto in this.context.Course on OnlineCourse.CourseId
-                                                                  equals depto.CourseId
+                onlineList = (from onlineCourse in cursosFiltradosOnline
+                              join depto in this.context.Course on onlineCourse.CourseId equals depto.CourseId
                               select new OnlineCourseDaoModel()
                               {
-                                  CourseId = OnlineCourse.CourseId
+                                  CourseId = onlineCourse.CourseId,
+                                  CourseName = depto.Title
+
                               }).ToList();
 
             }
@@ -108,6 +111,11 @@ namespace School.DAL.Dao
                 throw new DaoDepartmentException(message);
 
             OnlineCourse onlineCourseToUpdate = this.context.OnlineAssignments.Find(onlineCourse.CourseId);
+
+            onlineCourseToUpdate.Url = onlineCourse.Url;
+            onlineCourseToUpdate.CourseId = onlineCourse.CourseId;
+
+
 
             this.context.OnlineAssignments.Update(onlineCourseToUpdate);
             this.context.SaveChanges();

@@ -21,7 +21,7 @@ namespace school.Web.Controllers
         {
             var OnlineCourse = this.daoOnlineCourse.GetOnlineCourses()
                                                    .Select(cd => new OnlineCourseModel(cd));
-            return View();
+            return View(OnlineCourse);
         }
 
         // GET: OnlineCourseController/Details/5
