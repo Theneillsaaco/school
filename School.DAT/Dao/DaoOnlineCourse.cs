@@ -3,6 +3,7 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
+using School.DAL.Models;
 
 namespace School.DAL.Dao
 {
@@ -18,33 +19,74 @@ namespace School.DAL.Dao
             return this.context.OnlineAssignments.Any(filter);
         }
 
-        public OnlineCourse GetOnlineCourse(int id)
+        public OnlineCourseDaoModel GetOnlineCourse(int Id)
         {
-            return this.context.OnlineAssignments.Find(id);
+            OnlineCourseDaoModel? onlineCourseDaoModel = new OnlineCourseDaoModel();
+            try
+            {
+                onlineCourseDaoModel = (from OnlineCourse in this.context.OnlineAssignments
+                                        join depto in this.context.Course on OnlineCourse.CourseId
+                                                                          equals depto.CourseId
+                                        select new OnlineCourseDaoModel()
+                                        {
+                                            CourseId = OnlineCourse.CourseId
+                                        }).FirstOrDefault();  
+            }
+            catch(Exception ex)
+            {
+                throw new DaoOnlineCourseException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+            return onlineCourseDaoModel;
         }
 
-        public List<OnlineCourse> GetOnlineCourse()
+        public List<OnlineCourseDaoModel> GetOnlineCourse()
         {
-            return this.context.OnlineAssignments.ToList();
+            List<OnlineCourseDaoModel>? onlineList= new List<OnlineCourseDaoModel>();
+            try
+            {
+                onlineList = (from onlineCourse in this.context.OnlineAssignments
+                              join depto in this.context.Course on onlineCourse.CourseId
+                                                                     equals depto.CourseId
+                              select new OnlineCourseDaoModel()
+                              {
+                                  CourseId = onlineCourse.CourseId
+
+                              }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new DaoOnlineCourseException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+            return onlineList;
         }
 
-        public List<OnlineCourse> GetOnlineCourse(Func<OnlineCourse, bool> filter)
+        public List<OnlineCourseDaoModel> GetOnlineCourses(Func<OnlineCourse, bool> filter)
         {
-            return this.context.OnlineAssignments.Where(filter).ToList();
-        }
+            List<OnlineCourseDaoModel>? onlineList = new List<OnlineCourseDaoModel>();
 
-        public OnlineCourse GetOnlineCourset(int id)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                var onlineCourse = this.context.OnlineAssignments.Where(filter);
+
+                onlineList = (from OnlineCourse in onlineCourse
+                              join depto in this.context.Course on OnlineCourse.CourseId
+                                                                  equals depto.CourseId
+                              select new OnlineCourseDaoModel()
+                              {
+                                  CourseId = OnlineCourse.CourseId
+                              }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw new DaoOnlineCourseException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+            return onlineList;
         }
 
         public void RemoveOnlineCourse(OnlineCourse onlineCourse)
         {
-            OnlineCourse onlineCourseToRemove = this.GetOnlineCourse(onlineCourse.CourseId);
 
-            this.context.OnlineAssignments.Update(onlineCourseToRemove);
-
-            this.context.SaveChanges();
         }
 
         public void SaveOnlineCourse(OnlineCourse onlineCourse)
@@ -65,9 +107,9 @@ namespace School.DAL.Dao
             if (!IsOnlineCourseValid(onlineCourse, ref message, Operations.Update))
                 throw new DaoDepartmentException(message);
 
-            OnlineCourse onlineCourseToUpdate = this.GetOnlineCourse(onlineCourse.CourseId);
+            OnlineCourse onlineCourseToUpdate = this.context.OnlineAssignments.Find(onlineCourse.CourseId);
 
-            this.context.OnlineAssignments.Add(onlineCourseToUpdate);
+            this.context.OnlineAssignments.Update(onlineCourseToUpdate);
             this.context.SaveChanges();
         }
         private bool IsOnlineCourseValid(OnlineCourse onlineCourse, ref string message, Operations operations)

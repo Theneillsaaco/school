@@ -12,5 +12,6 @@ namespace School.DAL.Interfaces
         List<StudentDaoModel> GetStudent();
         List<StudentDaoModel> GetStudents(Func<Student, bool> filter);
         bool ExistesStudent(Func<Student, bool> filter);
+        IEnumerable<StudentDaoModel> GetStudents();
     }
 }

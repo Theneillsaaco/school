@@ -1,41 +1,42 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using school.Web.Models;
-using School.DAL.Dao;
-using School.DAL.Entities;
 using School.DAL.Interfaces;
+using school.Web.Models;
 
 namespace school.Web.Controllers
 {
-    public class StudentController : Controller
+    public class OnlineCourseController : Controller
     {
-        private readonly IDaoStudent daoStudent;
+        private readonly IDaoOnlineCourse daoOnlineCourse;
+        private readonly IDaoCourse daoCourse;
 
-        public StudentController(IDaoStudent daoStudent)
+        public OnlineCourseController(IDaoOnlineCourse daoOnlineCourse, IDaoCourse daoCourse)
         {
-            this.daoStudent = daoStudent;
+            this.daoOnlineCourse = daoOnlineCourse;
+            this.daoCourse = daoCourse;
         }
 
-        // GET: StudentController
+
+        // GET: OnlineCourseController
         public ActionResult Index()
         {
-            var student = this.daoStudent.GetStudents()
-                                         .Select(cd => new StudentModel(cd));
-            return View(student);
+            var OnlineCourse = this.daoOnlineCourse.GetOnlineCourses()
+                                                   .Select(cd => new OnlineCourseModel(cd));
+            return View();
         }
 
-        // GET: StudentController/Details/5
+        // GET: OnlineCourseController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: StudentController/Create
+        // GET: OnlineCourseController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: StudentController/Create
+        // POST: OnlineCourseController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -50,13 +51,13 @@ namespace school.Web.Controllers
             }
         }
 
-        // GET: StudentController/Edit/5
+        // GET: OnlineCourseController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: StudentController/Edit/5
+        // POST: OnlineCourseController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -71,13 +72,13 @@ namespace school.Web.Controllers
             }
         }
 
-        // GET: StudentController/Delete/5
+        // GET: OnlineCourseController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: StudentController/Delete/5
+        // POST: OnlineCourseController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

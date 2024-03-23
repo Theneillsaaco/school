@@ -4,6 +4,7 @@ using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
 using School.DAL.Models;
+using System.Linq;
 
 namespace School.DAL.Dao
 {
@@ -46,20 +47,37 @@ namespace School.DAL.Dao
 
         public List<StudentDaoModel> GetStudent()
         {
-            List<StudentDaoModel>? studentList = new List<StudentDaoModel>();
+            List<StudentDaoModel>? querry = new List<StudentDaoModel>();
             try
             {
-                studentList = (from Student in this.context.Students
-                               where Student.Deleted == false
+                querry = (from depto in this.context.Students
+                               where depto.Deleted == false
                                select new StudentDaoModel()
                                {
-                                   CreationDate = Student.CreationDate,
-                                   LastName = Student.LastName,
-                                   FirstName = Student.FirstName,
-                                   Id = Student.Id,
-                                   EnrollmentDate = Student.EnrollmentDate
+                                   CreationDate = depto.CreationDate,
+                                   LastName = depto.LastName,
+                                   FirstName = depto.FirstName,
+                                   Id = depto.Id,
+                                   EnrollmentDate = depto.EnrollmentDate
                                }).ToList();
 
+            }
+            catch (Exception ex)
+            {
+
+                throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+
+            return querry;
+        }
+
+        public List<StudentDaoModel> GetStudents(Func<Student, bool> filter)
+        {
+            List<StudentDaoModel>? studentList = new List<StudentDaoModel>();
+
+            try
+            {
+                var student = this.context.Students.Where(filter).ToList();
             }
             catch (Exception ex)
             {
@@ -70,33 +88,9 @@ namespace School.DAL.Dao
             return studentList;
         }
 
-        public List<StudentDaoModel> GetStudents(Func<Student, bool> filter)
+        public IEnumerable<StudentDaoModel> GetStudents()
         {
-            List<StudentDaoModel>? studentList = new List<StudentDaoModel>();
-
-            try
-            {
-                var student = this.context.Students.Where(filter);
-
-                studentList = (from Student in this.context.Students
-                               where Student.Deleted == false
-                               orderby Student.CreationDate descending
-                               select new StudentDaoModel()
-                               {
-                                   CreationDate = Student.CreationDate,
-                                   LastName = Student.LastName,
-                                   FirstName = Student.FirstName,
-                                   Id = Student.Id,
-                                   EnrollmentDate = Student.EnrollmentDate
-                               }).ToList();
-            }
-            catch (Exception ex)
-            {
-
-                throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
-            }
-
-            return studentList;
+            throw new NotImplementedException();
         }
 
         public void RemoveStudent(Student student)
