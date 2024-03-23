@@ -87,7 +87,6 @@ namespace School.Web.Controllers
         // GET: DepartmentController/Edit/5
         public ActionResult Edit(int id, string name)
         {
-
             var department = this.daoDepartment.GetDepartment(id);
 
             var modelDepto = new DepartamentGetModel()

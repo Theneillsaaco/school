@@ -18,14 +18,34 @@ namespace school.Web.Controllers
         // GET: StudentController
         public ActionResult Index()
         {
-            var student = this.daoStudent.GetStudents()
-                                         .Select(cd => new StudentModel(cd));
-            return View(student);
+            var students = this.daoStudent
+                              .GetStudents()
+                              .Select(cd => new StudentModel()
+                              {
+                                  FirstName = cd.FirstName,
+                                  LastName = cd.LastName,
+                                  Id = cd.Id,
+                                  EnrollmentDate= cd.EnrollmentDate,
+                              });
+
+            return View(students);
         }
 
         // GET: StudentController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int Id)
         {
+            var student = this.daoStudent.GetStudent(Id);
+
+            var modelStud = new StudentModel()
+            {
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Id = student.Id,
+                CreationDate = student.CreationDate,
+                EnrollmentDate = student.EnrollmentDate
+            };
+
+
             return View();
         }
 

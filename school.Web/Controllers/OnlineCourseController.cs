@@ -19,9 +19,9 @@ namespace school.Web.Controllers
         // GET: OnlineCourseController
         public ActionResult Index()
         {
-            var OnlineCourse = this.daoOnlineCourse.GetOnlineCourses()
-                                                   .Select(cd => new OnlineCourseModel(cd));
-            return View(OnlineCourse);
+            //var OnlineCourse = this.daoOnlineCourse.GetOnlineCourses()
+            //                                       .Select(cd => new OnlineCourseModel(cd));
+            return View(/*OnlineCourse*/);
         }
 
         // GET: OnlineCourseController/Details/5

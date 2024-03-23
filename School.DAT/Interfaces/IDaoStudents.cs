@@ -1,5 +1,4 @@
 ﻿using School.DAL.Entities;
-using School.DAL.Models;
 
 namespace School.DAL.Interfaces
 {
@@ -8,10 +7,9 @@ namespace School.DAL.Interfaces
         void SaveStudent(Student student);
         void UpdateStudent(Student student);
         void RemoveStudent(Student student);
-        StudentDaoModel GetStudent(int Id);
-        List<StudentDaoModel> GetStudent();
-        List<StudentDaoModel> GetStudents(Func<Student, bool> filter);
+        Student GetStudent(int Id);
+        List<Student> GetStudents();
+        List<Student> GetStudents(Func<Student, bool> filter);
         bool ExistesStudent(Func<Student, bool> filter);
-        IEnumerable<StudentDaoModel> GetStudents();
     }
 }

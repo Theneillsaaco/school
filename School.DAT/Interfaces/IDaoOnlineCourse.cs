@@ -13,7 +13,7 @@ namespace School.DAL.Interfaces
         
         OnlineCourseDaoModel GetOnlineCourse(int id);
 
-        List<OnlineCourseDaoModel> GetOnlineCourse();
+        List<OnlineCourseDaoModel> GetOnlineCourses();
 
         List<OnlineCourseDaoModel> GetOnlineCourses(Func<OnlineCourse, bool> filter);
 

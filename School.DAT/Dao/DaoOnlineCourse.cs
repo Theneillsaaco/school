@@ -40,7 +40,7 @@ namespace School.DAL.Dao
             return onlineCourseDaoModel;
         }
 
-        public List<OnlineCourseDaoModel> GetOnlineCourse()
+        public List<OnlineCourseDaoModel> GetOnlineCourses()
         {
             List<OnlineCourseDaoModel>? onlineList= new List<OnlineCourseDaoModel>();
             try
@@ -68,9 +68,9 @@ namespace School.DAL.Dao
 
             try
             {
-                var cursosFiltradosOnline = this.context.OnlineAssignments.Where(filter);
+                var OnlineCourse = this.context.OnlineAssignments.Where(filter);
 
-                onlineList = (from onlineCourse in cursosFiltradosOnline
+                onlineList = (from onlineCourse in OnlineCourse
                               join depto in this.context.Course on onlineCourse.CourseId equals depto.CourseId
                               select new OnlineCourseDaoModel()
                               {
