@@ -19,6 +19,7 @@ builder.Services.AddTransient<IDaoDepartment, DaoDepartment>();
 builder.Services.AddTransient<IDaoCourse, DaoCourse>();
 builder.Services.AddTransient<IDaoOnlineCourse, DaoOnlineCourse>();
 builder.Services.AddTransient<IDaoStudent, DaoStudent>();
+builder.Services.AddTransient<IDaoInstructor, DaoInstructor>();
 
 #endregion
 
