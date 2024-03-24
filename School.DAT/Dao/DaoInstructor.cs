@@ -23,12 +23,17 @@ namespace School.DAL.Dao
             return this.context.Instructors.Find(id);
         }
 
-        public List<Instructor> GetInstructor()
+        public List<Instructor> GetInstructors()
         {
-            return this.context.Instructors.ToList();
+            var querry = (from inst in this.context.Instructors
+                          where inst.Deleted == false
+                          orderby inst.Id ascending
+                          select inst).ToList();
+
+            return querry;
         }
 
-        public List<Instructor> GetInstructor(Func<Instructor, bool> filter)
+        public List<Instructor> GetInstructors(Func<Instructor, bool> filter)
         {
             return this.context.Instructors.Where(filter).ToList();
         }
@@ -61,17 +66,22 @@ namespace School.DAL.Dao
         {
             string message = string.Empty;
 
-            if (!IsInstructorValid(instructor, ref message, Operations.Update))
+            if (!IsInstructorValid(instructor, ref message, Operations.Save))
                 throw new DaoInstructorException(message);
 
-            Instructor instructorToUpdate = this.GetInstructor(instructor.Id);
+            Instructor? instructorToUpdate = this.context.Instructors.Find(instructor.Id);
+            
+            if (instructor is null)
+                throw new DaoInstructorException("No se encotro el Instructor");
 
             instructorToUpdate.ModifyDate = instructor.ModifyDate;
             instructorToUpdate.UserMod = instructor.UserMod;
             instructorToUpdate.FirstName = instructor.FirstName;
             instructorToUpdate.LastName = instructor.LastName;
+            instructorToUpdate.ModifyDate = instructor.ModifyDate;
+            instructorToUpdate.HireDate = instructor.HireDate;
 
-            this.context.Instructors.Add(instructorToUpdate);
+            this.context.Instructors.Update(instructorToUpdate);
             this.context.SaveChanges();
         }
         private bool IsInstructorValid(Instructor instructor, ref string message, Operations operations)
@@ -105,16 +115,6 @@ namespace School.DAL.Dao
 
             if (operations == Operations.Save)
             {
-                if (this.ExtistsInstructor(cd => cd.LastName == instructor.LastName))
-                {
-                    message = "El apellido ya se encuentra registrado.";
-                    return result;
-                }
-                if (this.ExtistsInstructor(cd => cd.FirstName == instructor.FirstName))
-                {
-                    message = "El nombre ya se encuentra registrado.";
-                    return result;
-                }
             }
 
             else

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>OnlineCourse</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -17,6 +17,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseName)
             </th>
             <th></th>
         </tr>
@@ -31,8 +34,12 @@
                 @Html.DisplayFor(modelItem => item.Url)
             </td>
             <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CourseId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CourseId })
+                @Html.DisplayFor(modelItem => item.CourseName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

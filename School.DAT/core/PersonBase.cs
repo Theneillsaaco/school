@@ -1,6 +1,4 @@
-﻿
-
-namespace School.DAL.core
+﻿namespace School.DAL.core
 {
     public class PersonBase : BaseEntity
     {

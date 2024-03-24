@@ -9,10 +9,8 @@ namespace School.DAL.Interfaces
         void UpdateInstructor(Instructor instructor);
         void RemoveInstructor(Instructor instructor);
         Instructor GetInstructor(int id);
-
-        List<Instructor> GetInstructor();
-
+        List<Instructor> GetInstructors();
+        List<Instructor> GetInstructors(Func<Instructor, bool> filter);
         bool ExtistsInstructor(Func<Instructor, bool> filter);
-        List<Instructor> GetInstructor(Func<Instructor, bool> filter);
     }
 }
