@@ -1,37 +1,46 @@
-﻿.menu-desplegable {
+﻿¡Claro que sí! Entiendo que deseas crear un menú desplegable en tu proyecto ASP.NET Core que se llame "Administrar" y que tenga opciones para "Departamento", "Curso" y "Estudiante". Aquí te guiaré paso a paso:
+
+1. Crea un archivo CSS:
+
+En el directorio raíz de tu proyecto, crea un nuevo archivo llamado menu.css.
+2. Añade estilos CSS:
+
+Pega los siguientes estilos en el archivo menu.css:
+CSS
+.menu-desplegable {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-    .menu-desplegable li {
-        display: inline-block;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+.menu-desplegable li {
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+    .menu-desplegable li a {
+        text-decoration: none;
+        color: black;
     }
 
-        .menu-desplegable li a {
-            text-decoration: none;
-            color: black;
-        }
-
-        .menu-desplegable li:hover {
-            background-color: #ccc;
-        }
+    .menu-desplegable li:hover {
+        background-color: #ccc;
+    }
 
         /* Estilos opcionales para submenús */
-        .menu-desplegable li ul {
-            position: absolute;
-            display: none;
-            top: 100%;
-            left: 0;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-top: none;
+    .menu-desplegable li ul {
+        position: absolute;
+        display: none;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-top: none;
             width: 150px; /* Ajusta el ancho */
-        }
+    }
 
-        .menu-desplegable li:hover ul {
-            display: block;
-        }
+    .menu-desplegable li:hover ul {
+        display: block;
+    }

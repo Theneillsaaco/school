@@ -3,6 +3,7 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace School.DAL.Dao
 {
@@ -13,14 +14,15 @@ namespace School.DAL.Dao
         {
             this.context = context;
         }
-        public bool ExtistsInstructor(Func<Instructor, bool> filter)
+
+        public bool ExistesInstructor(Func<Instructor, bool> filter)
         {
             return this.context.Instructors.Any(filter);
         }
 
-        public Instructor GetInstructor(int id)
+        public Instructor? GetInstructor(int Id)
         {
-            return this.context.Instructors.Find(id);
+            return this.context.Instructors.Find(Id);
         }
 
         public List<Instructor> GetInstructors()
@@ -52,24 +54,29 @@ namespace School.DAL.Dao
 
         public void SaveInstructor(Instructor instructor)
         {
-            string message = string.Empty;
+            try
+            {
+                this.context.Instructors.Add(instructor);
+                this.context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
 
-            if (!IsInstructorValid(instructor, ref message, Operations.Save))
-                throw new DaoInstructorException(message);
+                throw new DaoInstructorException(ex.Message);
+            }
 
-            this.context.Instructors.Add(instructor);
-            this.context.SaveChanges();
         }
 
         public void UpdateInstructor(Instructor instructor)
         {
-            string message = string.Empty;
 
-            if (!IsInstructorValid(instructor, ref message, Operations.Update))
-                throw new DaoInstructorException(message);
+            Instructor? instructorToUpdate = this.context.Instructors.Find(instructor.Id);
 
             Instructor instructorToUpdate = this.context.Instructors.Find(instructor.Id);
 
+            instructorToUpdate.FirstName = instructor.FirstName;
+            instructorToUpdate.LastName = instructor.LastName;
+            instructorToUpdate.HireDate = instructor.HireDate;
             instructorToUpdate.ModifyDate = instructor.ModifyDate;
             instructorToUpdate.UserMod = instructor.UserMod;
             instructorToUpdate.FirstName = instructor.FirstName;
@@ -80,49 +87,34 @@ namespace School.DAL.Dao
             this.context.Instructors.Update(instructorToUpdate);
             this.context.SaveChanges();
         }
+
         private bool IsInstructorValid(Instructor instructor, ref string message, Operations operations)
         {
             bool result = false;
 
-
-            if (string.IsNullOrEmpty(instructor.LastName))
-            {
-                message = "El apellido del instructor es requerido";
-                return true;
-            }
-
-            if (instructor.LastName.Length > 50)
-            {
-                message = "El apellido es demaciado largo, el limite es 50 caracteres";
-                return true;
-            }
-
-            if (instructor.FirstName.Length > 50)
-            {
-                message = "El apellido es demaciado largo, el limite es 50 caracteres";
-                return true;
-            }
-
             if (string.IsNullOrEmpty(instructor.FirstName))
             {
-                message = "El apellido del instructor es requerido";
+                message = "Se requiere un nombre";
                 return true;
             }
-
+            if (instructor.FirstName.Length > 50)
+            {
+                message = "El nombre es demaciado largo, El limite es 50 caracteres.";
+                return true;
+            }
+            if (string.IsNullOrEmpty(instructor.LastName))
+            {
+                message = "Se requiere un apellido";
+                return true;
+            }
+            if (instructor.LastName.Length > 50)
+            {
+                message = "El apellido es demaciado largo, El limite es 50 caracteres.";
+                return true;
+            }
             if (operations == Operations.Save)
             {
-                if (this.ExtistsInstructor(cd => cd.LastName == instructor.LastName))
-                {
-                    message = "El apellido ya se encuentra registrado.";
-                    return result;
-                }
-                if (this.ExtistsInstructor(cd => cd.FirstName == instructor.FirstName))
-                {
-                    message = "El nombre ya se encuentra registrado.";
-                    return result;
-                }
             }
-
             else
                 result = true;
 

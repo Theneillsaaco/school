@@ -76,14 +76,14 @@ namespace School.DAL.Dao
             Student? studentToUpdate = this.context.Students.Find(student.Id);
 
             if (student is null)
-                throw new DaoStudentException("No se encotro el curso.");
+                throw new DaoStudentException("No se encotro el estudiante.");
 
-            studentToUpdate.ModifyDate = student.ModifyDate;
             studentToUpdate.LastName = student.LastName;
             studentToUpdate.UserMod = student.UserMod;
             studentToUpdate.FirstName = student.FirstName;
             studentToUpdate.UserMod = student.UserMod;
             studentToUpdate.ModifyDate = student.ModifyDate;
+            studentToUpdate.EnrollmentDate = student.EnrollmentDate;
 
             this.context.Students.Update(studentToUpdate);
             this.context.SaveChanges();
