@@ -3,8 +3,6 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
-using School.DAL.Models;
-using System.Linq;
 
 namespace School.DAL.Dao
 {

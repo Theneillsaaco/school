@@ -25,7 +25,11 @@ namespace School.DAL.Dao
 
         public List<Instructor> GetInstructors()
         {
-            return this.context.Instructors.ToList();
+            var querry = (from inst in this.context.Instructors
+                          where inst.Deleted == false
+                          orderby  inst.Id ascending
+                          select inst).ToList();
+            return querry;
         }
 
         public List<Instructor> GetInstructors(Func<Instructor, bool> filter)
@@ -64,14 +68,16 @@ namespace School.DAL.Dao
             if (!IsInstructorValid(instructor, ref message, Operations.Update))
                 throw new DaoInstructorException(message);
 
-            Instructor instructorToUpdate = this.GetInstructor(instructor.Id);
+            Instructor instructorToUpdate = this.context.Instructors.Find(instructor.Id);
 
             instructorToUpdate.ModifyDate = instructor.ModifyDate;
             instructorToUpdate.UserMod = instructor.UserMod;
             instructorToUpdate.FirstName = instructor.FirstName;
             instructorToUpdate.LastName = instructor.LastName;
+            instructorToUpdate.UserMod = instructor.UserMod;
+            instructorToUpdate.HireDate = instructor.HireDate;
 
-            this.context.Instructors.Add(instructorToUpdate);
+            this.context.Instructors.Update(instructorToUpdate);
             this.context.SaveChanges();
         }
         private bool IsInstructorValid(Instructor instructor, ref string message, Operations operations)

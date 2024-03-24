@@ -87,6 +87,7 @@ namespace school.Web.Controllers
 
             var modelInst = new InstructorModel()
             {
+                Id = instructor.Id,
                 LastName = instructor.LastName,
                 FirstName = instructor.FirstName,
                 HireDate = instructor.HireDate
@@ -104,6 +105,7 @@ namespace school.Web.Controllers
             {
                 Instructor instructor = new Instructor()
                 {
+                    Id = instructorModel.Id,
                     LastName = instructorModel.LastName,
                     FirstName = instructorModel.FirstName,
                     HireDate = instructorModel.HireDate,
