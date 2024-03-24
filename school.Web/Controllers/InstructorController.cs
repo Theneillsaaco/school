@@ -42,7 +42,7 @@ namespace school.Web.Controllers
                 LastName = instructor.LastName,
                 Id = instructor.Id,
                 CreationDate = instructor.CreationDate,
-                HireDate= instructor.HireDate
+                HireDate = instructor.HireDate
             };
 
 
