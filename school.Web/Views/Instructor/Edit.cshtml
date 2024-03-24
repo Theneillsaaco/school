@@ -4,7 +4,12 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Editar a @Model.FirstName @Model.LastName</h1>
+@if (@ViewBag.Message != null)
+{
+    <h4 style="color:red">@ViewBag.Message</h4>
+}
+
+<h1>Editar</h1>
 
 <hr />
 <div class="row">
