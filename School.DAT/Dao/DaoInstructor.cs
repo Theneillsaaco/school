@@ -23,12 +23,12 @@ namespace School.DAL.Dao
             return this.context.Instructors.Find(id);
         }
 
-        public List<Instructor> GetInstructor()
+        public List<Instructor> GetInstructors()
         {
             return this.context.Instructors.ToList();
         }
 
-        public List<Instructor> GetInstructor(Func<Instructor, bool> filter)
+        public List<Instructor> GetInstructors(Func<Instructor, bool> filter)
         {
             return this.context.Instructors.Where(filter).ToList();
         }
