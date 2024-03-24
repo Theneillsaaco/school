@@ -1,5 +1,4 @@
 ﻿using School.DAL.Entities;
-using School.DAL.Models;
 
 namespace School.DAL.Interfaces
 {

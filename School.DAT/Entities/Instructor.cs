@@ -6,6 +6,5 @@ namespace School.DAL.Entities
     {
         public int Id { get; set; }
         public DateTime HireDate { get; set; }
-
     }
 }

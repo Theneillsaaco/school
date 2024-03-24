@@ -5,7 +5,7 @@ using School.DAL.Interfaces;
 using School.DAL.Enums;
 using School.DAL.Models;
 
-namespace School.DAL.Dao 
+namespace School.DAL.Dao
 {
     public class DaoCourse : IDaoCourse
     {
@@ -25,21 +25,21 @@ namespace School.DAL.Dao
             CourseDaoModel? courseDaoModel = new CourseDaoModel();
             try
             {
-                 courseDaoModel = (from Course in this.context.Course
-                             join depto in this.context.Departments on Course.DepartmentId 
-                                                                    equals depto.DepartmentId
-                             where Course.Deleted == false
-                                && Course.CourseId == Id
-                             select new CourseDaoModel()
-                             {
-                                 CourseId = Course.CourseId,
-                                 CreatedDate = Course.CreationDate,
-                                 Credits = Course.Credits,
-                                 DepartmentId = Course.DepartmentId,
-                                 DepartmentName = depto.Name,
-                                 Title = Course.Title
+                courseDaoModel = (from Course in this.context.Course
+                                  join depto in this.context.Departments on Course.DepartmentId
+                                                                         equals depto.DepartmentId
+                                  where Course.Deleted == false
+                                     && Course.CourseId == Id
+                                  select new CourseDaoModel()
+                                  {
+                                      CourseId = Course.CourseId,
+                                      CreatedDate = Course.CreationDate,
+                                      Credits = Course.Credits,
+                                      DepartmentId = Course.DepartmentId,
+                                      DepartmentName = depto.Name,
+                                      Title = Course.Title
 
-                             }).FirstOrDefault();
+                                  }).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -54,19 +54,19 @@ namespace School.DAL.Dao
             try
             {
                 courseList = (from Course in this.context.Course
-                                  join depto in this.context.Departments on Course.DepartmentId
-                                                                         equals depto.DepartmentId
-                                  where Course.Deleted == false
-                                  select new CourseDaoModel()
-                                  {
-                                      CourseId = Course.CourseId,
-                                      CreatedDate = Course.CreationDate,
-                                      Credits = Course.Credits,
-                                      DepartmentId = Course.DepartmentId,
-                                      DepartmentName = depto.Name,
-                                      Title = Course.Title
+                              join depto in this.context.Departments on Course.DepartmentId
+                                                                     equals depto.DepartmentId
+                              where Course.Deleted == false
+                              select new CourseDaoModel()
+                              {
+                                  CourseId = Course.CourseId,
+                                  CreatedDate = Course.CreationDate,
+                                  Credits = Course.Credits,
+                                  DepartmentId = Course.DepartmentId,
+                                  DepartmentName = depto.Name,
+                                  Title = Course.Title
 
-                                  }).ToList();
+                              }).ToList();
             }
             catch (Exception ex)
             {
@@ -84,20 +84,20 @@ namespace School.DAL.Dao
                 var course = this.context.Course.Where(filter);
 
                 courseList = (from Course in course
-                             join depto in this.context.Departments on Course.DepartmentId 
-                                                                 equals depto.DepartmentId
-                             where Course.Deleted == false
-                             orderby Course.CreationDate descending
-                             select new CourseDaoModel() 
-                             {
-                                 CourseId = Course.CourseId,
-                                 CreatedDate = Course.CreationDate,
-                                 Credits = Course.Credits,
-                                 DepartmentId = Course.DepartmentId,
-                                 DepartmentName = depto.Name,
-                                 Title = Course.Title
+                              join depto in this.context.Departments on Course.DepartmentId
+                                                                  equals depto.DepartmentId
+                              where Course.Deleted == false
+                              orderby Course.CreationDate descending
+                              select new CourseDaoModel()
+                              {
+                                  CourseId = Course.CourseId,
+                                  CreatedDate = Course.CreationDate,
+                                  Credits = Course.Credits,
+                                  DepartmentId = Course.DepartmentId,
+                                  DepartmentName = depto.Name,
+                                  Title = Course.Title
 
-                             }).ToList();
+                              }).ToList();
 
             }
             catch (Exception ex)
@@ -137,7 +137,7 @@ namespace School.DAL.Dao
 
             if (course is null)
                 throw new DaoCourseException("No se encotro el curso.");
-            
+
 
             courseToUpdate.ModifyDate = course.ModifyDate;
             courseToUpdate.Title = course.Title;
@@ -164,7 +164,7 @@ namespace School.DAL.Dao
                 return true;
             }
 
-            
+
             if (course.Credits == 0)
             {
                 message = "El credito no puede ser 0.";
