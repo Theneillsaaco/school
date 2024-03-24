@@ -38,11 +38,6 @@ namespace School.DAL.Dao
 
         public void SaveStudentGrade(StudentGrade studentGrade)
         {
-            string message = string.Empty;
-
-            if (!IsStudentGradeValid(studentGrade, ref message, Operations.Save))
-                throw new DaoStudentGradeException(message);
-
             this.context.StudentGrades.Add(studentGrade);
             this.context.SaveChanges();
         }

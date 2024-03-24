@@ -3,6 +3,7 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
+using School.DAL.Models;
 
 namespace School.DAL.Dao
 {
@@ -33,9 +34,33 @@ namespace School.DAL.Dao
             return querry;
         }
 
-        public List<Student> GetStudents(Func<Student, bool> filter)
+        public List<StudentDaoModel> GetStudents(Func<Student, bool> filter)
         {
-            return this.context.Students.Where(filter).ToList();
+            List<StudentDaoModel>? studentList = new List<StudentDaoModel>();
+
+            try
+            {
+                var student = this.context.Students.Where(filter);
+
+                studentList = (from Student in this.context.Students
+                               where Student.Deleted == false
+                               orderby Student.CreationDate descending
+                               select new StudentDaoModel()
+                               {
+                                   CreationDate = Student.CreationDate,
+                                   LastName = Student.LastName,
+                                   FirstName = Student.FirstName,
+                                   Id = Student.Id,
+                                   EnrollmentDate = Student.EnrollmentDate
+                               }).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
+            }
+
+            return studentList;
         }
 
         public void RemoveStudent(Student student)
@@ -47,8 +72,6 @@ namespace School.DAL.Dao
             studentToRemove.UserDeleted = student.UserDeleted;
 
             this.context.Students.Update(studentToRemove);
-
-            this.context.SaveChanges();
         }
 
         public void SaveStudent(Student student)
@@ -60,10 +83,8 @@ namespace School.DAL.Dao
             }
             catch (Exception ex)
             {
-
                 throw new DaoStudentException(ex.Message);
             }
-
         }
 
         public void UpdateStudent(Student student)
