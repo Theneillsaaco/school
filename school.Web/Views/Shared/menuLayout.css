@@ -1,13 +1,4 @@
-﻿¡Claro que sí! Entiendo que deseas crear un menú desplegable en tu proyecto ASP.NET Core que se llame "Administrar" y que tenga opciones para "Departamento", "Curso" y "Estudiante". Aquí te guiaré paso a paso:
-
-1. Crea un archivo CSS:
-
-En el directorio raíz de tu proyecto, crea un nuevo archivo llamado menu.css.
-2. Añade estilos CSS:
-
-Pega los siguientes estilos en el archivo menu.css:
-CSS
-.menu-desplegable {
+﻿.menu-desplegable {
     list-style: none;
     padding: 0;
     margin: 0;

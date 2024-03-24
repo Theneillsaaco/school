@@ -15,7 +15,7 @@ namespace School.DAL.Dao
             this.context = context;
         }
 
-        public bool ExistesInstructor(Func<Instructor, bool> filter)
+        public bool ExtistsInstructor(Func<Instructor, bool> filter)
         {
             return this.context.Instructors.Any(filter);
         }
@@ -71,8 +71,6 @@ namespace School.DAL.Dao
         {
 
             Instructor? instructorToUpdate = this.context.Instructors.Find(instructor.Id);
-
-            Instructor instructorToUpdate = this.context.Instructors.Find(instructor.Id);
 
             instructorToUpdate.FirstName = instructor.FirstName;
             instructorToUpdate.LastName = instructor.LastName;
