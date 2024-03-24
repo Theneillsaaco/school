@@ -1,4 +1,4 @@
-﻿﻿@model school.Web.Models.InstructorModel
+﻿@model school.Web.Models.InstructorModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -43,5 +43,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
