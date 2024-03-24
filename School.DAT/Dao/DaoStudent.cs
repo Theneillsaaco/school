@@ -3,8 +3,6 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
-using School.DAL.Models;
-using System.Linq;
 
 namespace School.DAL.Dao
 {
@@ -29,7 +27,7 @@ namespace School.DAL.Dao
         public List<Student> GetStudents()
         {
             var querry = (from stud in this.context.Students
-                          where stud.Deleted == false 
+                          where stud.Deleted == false
                           orderby stud.Id ascending
                           select stud).ToList();
             return querry;
