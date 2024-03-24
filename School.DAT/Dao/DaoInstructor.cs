@@ -69,19 +69,19 @@ namespace School.DAL.Dao
 
         public void UpdateInstructor(Instructor instructor)
         {
-            var instructorToUpdate = context.Instructors.Find(instructor.Id);
 
-            if (instructorToUpdate == null)
-               throw new DaoInstructorException("No se encontró el instructor"); // Informative exception
+            Instructor? instructorToUpdate = this.context.Instructors.Find(instructor.Id);
 
+            if (instructor is null)
+                throw new DaoInstructorException("No se encotro el Instructor.");
 
-            // Update properties of instructorToUpdate using instructor values
             instructorToUpdate.FirstName = instructor.FirstName;
             instructorToUpdate.LastName = instructor.LastName;
             instructorToUpdate.HireDate = instructor.HireDate;
-            instructorToUpdate.ModifyDate = instructor.ModifyDate; // Assuming this is populated
-            instructorToUpdate.UserMod = instructor.UserMod; // Assuming this is populated
+            instructorToUpdate.ModifyDate = instructor.ModifyDate;
+            instructorToUpdate.UserMod = instructor.UserMod;
 
+            this.context.Instructors.Update(instructorToUpdate);
             context.SaveChanges();
         }
 

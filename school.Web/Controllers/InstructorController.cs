@@ -18,7 +18,7 @@ namespace school.Web.Controllers
         // GET: StudentController
         public ActionResult Index()
         {
-            var instructor = this.daoInstructor
+            var instructors = this.daoInstructor
                               .GetInstructors()
                               .Select(cd => new InstructorModel()
                               {
@@ -28,7 +28,7 @@ namespace school.Web.Controllers
                                   HireDate = cd.HireDate
                               });
 
-            return View(instructor);
+            return View(instructors);
         }
 
         // GET: StudentController/Details/5
