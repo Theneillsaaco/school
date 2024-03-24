@@ -1,5 +1,4 @@
-﻿
-using School.DAL.Entities;
+﻿using School.DAL.Entities;
 
 namespace School.DAL.Interfaces
 {
@@ -8,9 +7,9 @@ namespace School.DAL.Interfaces
         void SaveInstructor(Instructor instructor);
         void UpdateInstructor(Instructor instructor);
         void RemoveInstructor(Instructor instructor);
-        Instructor GetInstructor(int id);
+        Instructor GetInstructor(int Id);
         List<Instructor> GetInstructors();
         List<Instructor> GetInstructors(Func<Instructor, bool> filter);
-        bool ExtistsInstructor(Func<Instructor, bool> filter);
+        public bool ExistesInstructor(Func<Instructor, bool> filter);
     }
 }

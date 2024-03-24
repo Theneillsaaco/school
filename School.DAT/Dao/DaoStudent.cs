@@ -78,7 +78,6 @@ namespace School.DAL.Dao
             if (student is null)
                 throw new DaoStudentException("No se encotro el estudiante.");
 
-            studentToUpdate.ModifyDate = student.ModifyDate;
             studentToUpdate.LastName = student.LastName;
             studentToUpdate.UserMod = student.UserMod;
             studentToUpdate.FirstName = student.FirstName;

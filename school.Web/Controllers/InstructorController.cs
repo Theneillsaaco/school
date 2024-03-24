@@ -68,15 +68,15 @@ namespace school.Web.Controllers
         }
 
         // GET: InstructorController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int Id)
         {
-            var instructor = this.daoInstructor.GetInstructor(id);
+            var instructor = this.daoInstructor.GetInstructor(Id);
 
             var modelInst = new InstructorModel() 
             {
                 FirstName = instructor.FirstName,
                 LastName = instructor.LastName,
-                HireDate=instructor.HireDate
+                HireDate = instructor.HireDate
             };
 
             return View(modelInst);
