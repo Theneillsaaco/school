@@ -3,6 +3,7 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace School.DAL.Dao
 {
@@ -68,25 +69,20 @@ namespace School.DAL.Dao
 
         public void UpdateInstructor(Instructor instructor)
         {
-            string message = string.Empty;
+            var instructorToUpdate = context.Instructors.Find(instructor.Id);
 
-            if (!IsInstructorValid(instructor, ref message, Operations.Update))
-                throw new DaoStudentException(message);
+            if (instructorToUpdate == null)
+               throw new DaoInstructorException("No se encontró el instructor"); // Informative exception
 
-            Instructor? instructorToUpdate = this.context.Instructors.Find(instructor.Id);
 
-            if (instructor is null)
-                throw new DaoStudentException("No se encotro el estudiante.");
-
-            instructorToUpdate.LastName = instructor.LastName;
-            instructorToUpdate.UserMod = instructor.UserMod;
+            // Update properties of instructorToUpdate using instructor values
             instructorToUpdate.FirstName = instructor.FirstName;
-            instructorToUpdate.UserMod = instructor.UserMod;
-            instructorToUpdate.ModifyDate = instructor.ModifyDate;
+            instructorToUpdate.LastName = instructor.LastName;
             instructorToUpdate.HireDate = instructor.HireDate;
+            instructorToUpdate.ModifyDate = instructor.ModifyDate; // Assuming this is populated
+            instructorToUpdate.UserMod = instructor.UserMod; // Assuming this is populated
 
-            this.context.Instructors.Update(instructorToUpdate);
-            this.context.SaveChanges();
+            context.SaveChanges();
         }
 
         private bool IsInstructorValid(Instructor instructor, ref string message, Operations operations)

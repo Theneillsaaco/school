@@ -9,56 +9,69 @@ namespace school.Web.Controllers
     public class InstructorController : Controller
     {
         private readonly IDaoInstructor daoInstructor;
+
         public InstructorController(IDaoInstructor daoInstructor)
         {
             this.daoInstructor = daoInstructor;
         }
-        // GET: InstructorController
+
+        // GET: StudentController
         public ActionResult Index()
         {
             var instructor = this.daoInstructor
-                                 .GetInstructors()
-                                 .Select(cd => new InstructorModel()
-                                 {
-                                     FirstName = cd.FirstName,
-                                     LastName = cd.LastName,
-                                     Id = cd.Id,
-                                     HireDate = cd.HireDate,
-                                 });
+                              .GetInstructors()
+                              .Select(cd => new InstructorModel()
+                              {
+                                  FirstName = cd.FirstName,
+                                  LastName = cd.LastName,
+                                  Id = cd.Id,
+                                  HireDate = cd.HireDate
+                              });
 
             return View(instructor);
         }
 
-        // GET: InstructorController/Details/5
-        public ActionResult Details(int id)
+        // GET: StudentController/Details/5
+        public ActionResult Details(int Id)
         {
-            var instructor = this.daoInstructor.GetInstructor(id);
+            var instructor = this.daoInstructor.GetInstructor(Id);
 
             var modelInst = new InstructorModel()
             {
                 FirstName = instructor.FirstName,
                 LastName = instructor.LastName,
                 Id = instructor.Id,
-                HireDate = instructor.HireDate,
-                CreationDate = instructor.CreationDate
+                CreationDate = instructor.CreationDate,
+                HireDate= instructor.HireDate
             };
+
 
             return View(modelInst);
         }
 
-        // GET: InstructorController/Create
+        // GET: StudentController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: InstructorController/Create
+        // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(InstructorModel instructorModel)
         {
             try
             {
+                Instructor instructor = new Instructor()
+                {
+                    FirstName = instructorModel.FirstName,
+                    LastName = instructorModel.LastName,
+                    CreationUser = 1,
+                    CreationDate = DateTime.Now,
+                    HireDate = instructorModel.HireDate
+                };
+
+                this.daoInstructor.SaveInstructor(instructor);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -67,32 +80,32 @@ namespace school.Web.Controllers
             }
         }
 
-        // GET: InstructorController/Edit/5
-        public ActionResult Edit(int Id)
+        // GET: StudentController/Edit/5
+        public ActionResult Edit(int id)
         {
-            var instructor = this.daoInstructor.GetInstructor(Id);
+            var instructor = this.daoInstructor.GetInstructor(id);
 
-            var modelInst = new InstructorModel() 
+            var modelInst = new InstructorModel()
             {
-                FirstName = instructor.FirstName,
                 LastName = instructor.LastName,
+                FirstName = instructor.FirstName,
                 HireDate = instructor.HireDate
             };
 
             return View(modelInst);
         }
 
-        // POST: InstructorController/Edit/5
+        // POST: StudentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(InstructorModel instructorModel)
         {
             try
             {
-                Instructor instructor = new Instructor() 
+                Instructor instructor = new Instructor()
                 {
-                    FirstName = instructorModel.FirstName,
                     LastName = instructorModel.LastName,
+                    FirstName = instructorModel.FirstName,
                     HireDate = instructorModel.HireDate,
                     ModifyDate = DateTime.Now,
                     UserMod = 1
@@ -101,20 +114,20 @@ namespace school.Web.Controllers
                 this.daoInstructor.UpdateInstructor(instructor);
                 return RedirectToAction(nameof(Index));
             }
-            catch (DaoInstructorException daoEx)
+            catch (DaoStudentException daoEx)
             {
                 ViewBag.Message = daoEx.Message;
                 return View();
             }
         }
 
-        // GET: InstructorController/Delete/5
+        // GET: StudentController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: InstructorController/Delete/5
+        // POST: StudentController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
