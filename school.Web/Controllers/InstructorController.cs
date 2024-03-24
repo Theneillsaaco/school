@@ -2,50 +2,51 @@
 using school.Web.Models;
 using School.DAL.Entities;
 using School.DAL.Exceptions;
+using School.DAL.Interfaces;
 
 namespace school.Web.Controllers
 {
-    public class StudentController : Controller
+    public class InstructorController : Controller
     {
-        private readonly IDaoStudent daoStudent;
+        private readonly IDaoInstructor daoInstructor;
 
-        public StudentController(IDaoStudent daoStudent)
+        public InstructorController(IDaoInstructor daoInstructor)
         {
-            this.daoStudent = daoStudent;
+            this.daoInstructor = daoInstructor;
         }
 
         // GET: StudentController
         public ActionResult Index()
         {
-            var students = this.daoStudent
-                              .GetStudents()
-                              .Select(cd => new StudentModel()
+            var instructors = this.daoInstructor
+                              .GetInstructors()
+                              .Select(cd => new InstructorModel()
                               {
                                   FirstName = cd.FirstName,
                                   LastName = cd.LastName,
                                   Id = cd.Id,
-                                  EnrollmentDate= cd.EnrollmentDate
+                                  HireDate = cd.HireDate
                               });
 
-            return View(students);
+            return View(instructors);
         }
 
         // GET: StudentController/Details/5
         public ActionResult Details(int Id)
         {
-            var student = this.daoStudent.GetStudent(Id);
+            var instructor = this.daoInstructor.GetInstructor(Id);
 
-            var modelStud = new StudentModel()
+            var modelInst = new InstructorModel()
             {
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                Id = student.Id,
-                CreationDate = student.CreationDate,
-                EnrollmentDate = student.EnrollmentDate
+                FirstName = instructor.FirstName,
+                LastName = instructor.LastName,
+                Id = instructor.Id,
+                CreationDate = instructor.CreationDate,
+                HireDate = instructor.HireDate
             };
 
 
-            return View(modelStud);
+            return View(modelInst);
         }
 
         // GET: StudentController/Create
@@ -57,20 +58,20 @@ namespace school.Web.Controllers
         // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(StudentModel studentModel)
+        public ActionResult Create(InstructorModel instructorModel)
         {
             try
             {
-                Student student = new Student()
+                Instructor instructor = new Instructor()
                 {
-                    FirstName = studentModel.FirstName,
-                    LastName = studentModel.LastName,
+                    FirstName = instructorModel.FirstName,
+                    LastName = instructorModel.LastName,
                     CreationUser = 1,
                     CreationDate = DateTime.Now,
-                    EnrollmentDate = DateTime.Now
+                    HireDate = instructorModel.HireDate
                 };
 
-                this.daoStudent.SaveStudent(student);
+                this.daoInstructor.SaveInstructor(instructor);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -82,40 +83,42 @@ namespace school.Web.Controllers
         // GET: StudentController/Edit/5
         public ActionResult Edit(int id)
         {
-            var student = this.daoStudent.GetStudent(id);
+            var instructor = this.daoInstructor.GetInstructor(id);
 
-            var modelStud = new StudentModel()
+            var modelInst = new InstructorModel()
             {
-                LastName = student.LastName,
-                FirstName = student.FirstName,
-                EnrollmentDate = student.EnrollmentDate,
+                Id = instructor.Id,
+                LastName = instructor.LastName,
+                FirstName = instructor.FirstName,
+                HireDate = instructor.HireDate
             };
 
-            return View(modelStud);
+            return View(modelInst);
         }
 
         // POST: StudentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(StudentModel studentModel)
+        public ActionResult Edit(InstructorModel instructorModel)
         {
             try
             {
-                Student student = new Student()
+                Instructor instructor = new Instructor()
                 {
-                    LastName = studentModel.LastName,
-                    FirstName = studentModel.FirstName,
-                    EnrollmentDate = studentModel.EnrollmentDate,
+                    Id = instructorModel.Id,
+                    LastName = instructorModel.LastName,
+                    FirstName = instructorModel.FirstName,
+                    HireDate = instructorModel.HireDate,
                     ModifyDate = DateTime.Now,
                     UserMod = 1
                 };
 
-                this.daoStudent.UpdateStudent(student);
+                this.daoInstructor.UpdateInstructor(instructor);
                 return RedirectToAction(nameof(Index));
             }
             catch (DaoStudentException daoEx)
             {
-                ViewBag.Message = daoEx.Message; 
+                ViewBag.Message = daoEx.Message;
                 return View();
             }
         }

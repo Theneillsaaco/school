@@ -75,7 +75,6 @@ namespace School.Web.Controllers
                 };
 
                 this.daoDepartment.SaveDerpartment(department);
-
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -85,9 +84,8 @@ namespace School.Web.Controllers
         }
 
         // GET: DepartmentController/Edit/5
-        public ActionResult Edit(int id, string name)
+        public ActionResult Edit(int id)
         {
-
             var department = this.daoDepartment.GetDepartment(id);
 
             var modelDepto = new DepartamentGetModel()

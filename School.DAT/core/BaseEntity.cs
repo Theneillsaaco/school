@@ -1,11 +1,7 @@
-﻿
-using School.DAL.Entities;
-
-namespace School.DAL.core
+﻿namespace School.DAL.core
 {
     public abstract class BaseEntity
     {
-
         public DateTime CreationDate { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int CreationUser { get; set; }
