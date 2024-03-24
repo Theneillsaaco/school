@@ -74,12 +74,11 @@ namespace School.DAL.Dao
             if (instructor is null)
                 throw new DaoInstructorException("No se encotro el Instructor");
 
-            instructorToUpdate.ModifyDate = instructor.ModifyDate;
-            instructorToUpdate.UserMod = instructor.UserMod;
             instructorToUpdate.FirstName = instructor.FirstName;
             instructorToUpdate.LastName = instructor.LastName;
-            instructorToUpdate.ModifyDate = instructor.ModifyDate;
             instructorToUpdate.HireDate = instructor.HireDate;
+            instructorToUpdate.ModifyDate = instructor.ModifyDate;
+            instructorToUpdate.UserMod = instructor.UserMod;
 
             this.context.Instructors.Update(instructorToUpdate);
             this.context.SaveChanges();
