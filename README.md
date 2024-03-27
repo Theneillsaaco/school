@@ -1,4 +1,4 @@
-# Ya todo fuciona 
+# Ya todo fuciona (mira hacia bajo)
 
 Este es el proyecto final del curso
 
