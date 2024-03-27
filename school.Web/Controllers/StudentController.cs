@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using school.Web.Models;
+using School.DAL.Dao;
 using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
@@ -25,7 +26,7 @@ namespace school.Web.Controllers
                                   FirstName = cd.FirstName,
                                   LastName = cd.LastName,
                                   Id = cd.Id,
-                                  EnrollmentDate= cd.EnrollmentDate
+                                  EnrollmentDate = cd.EnrollmentDate,
                               });
 
             return View(students);
@@ -87,6 +88,7 @@ namespace school.Web.Controllers
 
             var modelStud = new StudentModel()
             {
+                Id = student.Id,
                 LastName = student.LastName,
                 FirstName = student.FirstName,
                 EnrollmentDate = student.EnrollmentDate,
@@ -104,11 +106,13 @@ namespace school.Web.Controllers
             {
                 Student student = new Student()
                 {
+                    Id = studentModel.Id,
                     LastName = studentModel.LastName,
                     FirstName = studentModel.FirstName,
                     EnrollmentDate = studentModel.EnrollmentDate,
                     ModifyDate = DateTime.Now,
                     UserMod = 1
+
                 };
 
                 this.daoStudent.UpdateStudent(student);
@@ -116,7 +120,7 @@ namespace school.Web.Controllers
             }
             catch (DaoStudentException daoEx)
             {
-                ViewBag.Message = daoEx.Message; 
+                ViewBag.Message = daoEx.Message;
                 return View();
             }
         }
