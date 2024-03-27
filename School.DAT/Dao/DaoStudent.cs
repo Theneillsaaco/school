@@ -53,6 +53,8 @@ namespace School.DAL.Dao
                                    Id = Student.Id,
                                    EnrollmentDate = Student.EnrollmentDate
                                }).ToList();
+
+                return studentList;
             }
             catch (Exception ex)
             {
@@ -60,7 +62,7 @@ namespace School.DAL.Dao
                 throw new DaoStudentException($"Error, no se pudo obtener el curso: {ex.Message}");
             }
 
-            return studentList;
+            
         }
 
         public void RemoveStudent(Student student)

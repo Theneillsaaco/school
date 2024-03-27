@@ -7,6 +7,6 @@
         public string? FirstName { get; set; }
         public DateTime? CreationDate { get; set; }
         public DateTime? EnrollmentDate { get; set; }
-        
+
     }
 }

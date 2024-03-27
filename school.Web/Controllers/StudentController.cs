@@ -2,6 +2,7 @@
 using school.Web.Models;
 using School.DAL.Entities;
 using School.DAL.Exceptions;
+using School.DAL.Interfaces;
 
 namespace school.Web.Controllers
 {

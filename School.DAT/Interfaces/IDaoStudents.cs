@@ -10,7 +10,7 @@ namespace School.DAL.Interfaces
         void RemoveStudent(Student student);
         Student GetStudent(int Id);
         List<Student> GetStudents();
-        List<Student> GetStudents(Func<Student, bool> filter);
+        List<StudentDaoModel> GetStudents(Func<Student, bool> filter);
         bool ExistesStudent(Func<Student, bool> filter);
     }
 }
