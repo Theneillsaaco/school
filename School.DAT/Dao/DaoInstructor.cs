@@ -3,7 +3,6 @@ using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
 using School.DAL.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace School.DAL.Dao
 {

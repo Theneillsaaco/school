@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using school.Web.Models;
-using School.DAL.Dao;
 using School.DAL.Entities;
 using School.DAL.Exceptions;
 using School.DAL.Interfaces;
