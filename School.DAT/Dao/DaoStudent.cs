@@ -30,6 +30,7 @@ namespace School.DAL.Dao
                           where stud.Deleted == false
                           orderby stud.Id ascending
                           select stud).ToList();
+
             return querry;
         }
 
